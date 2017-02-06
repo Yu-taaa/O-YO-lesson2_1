@@ -37,8 +37,8 @@ public class EnemyController : MonoBehaviour {
 		Quaternion q1 = Quaternion.Euler (0, 185, 0);
 		Quaternion q2 = Quaternion.Euler (0, 175, 0);
 		interval = 0;
-		Instantiate (enemyBullet, new Vector3 (transform.position.x - 1, transform.position.y, transform.position.z), q1);
-		Instantiate (enemyBullet, new Vector3 (transform.position.x + 1, transform.position.y, transform.position.z), q2);
+		Instantiate (enemyBullet, new Vector3 (transform.position.x - 1, transform.position.y, transform.position.z - 2), q1);
+		Instantiate (enemyBullet, new Vector3 (transform.position.x + 1, transform.position.y, transform.position.z - 2), q2);
 	} 
 
 	//衝突判定・爆発
@@ -47,6 +47,9 @@ public class EnemyController : MonoBehaviour {
 			Instantiate (explosion, transform.position, Quaternion.identity);
 			Destroy (this.gameObject);
 			Destroy (coll.gameObject);
+			//スコアの加算
+			ScoreController obj = GameObject.Find ("Main Camera").GetComponent<ScoreController>();
+			obj.ScorePlus ();
 		}
 	}
 }

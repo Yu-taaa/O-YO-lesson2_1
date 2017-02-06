@@ -8,8 +8,8 @@ public class PlayerController : MonoBehaviour {
 	public float speedZ;
 
 	//弾
-	public GameObject Bullet;
-	float BulletInterval;
+	public GameObject bullet;
+	float bulletInterval;
 
 	//敵
 	public GameObject enemy;
@@ -18,13 +18,20 @@ public class PlayerController : MonoBehaviour {
 	//爆発
 	public GameObject explosion;
 
+	//Sliderと体力
+	Slider slider;
+	int playerLife;
 
 	// Use this for initialization
 	void Start () {
 		//弾のインターバル
-		BulletInterval = 0.0f;
+		bulletInterval = 0;
 		//敵のインターバル
-		enemyInterval = 0.0f;
+		enemyInterval = 0;
+		//体力の設定
+		playerLife = 3;
+		//スライダーコンポーネントを取得
+		slider = GameObject.Find ("Slider").GetComponent<Slider> ();
 	}
 
 	// Update is called once per frame
@@ -48,16 +55,16 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		//弾の生成
-		BulletInterval += Time.deltaTime;
+		bulletInterval += Time.deltaTime;
 		if (Input.GetKey ("space")) {
-			if (BulletInterval >= 0.2f) {
+			if (bulletInterval >= 0.2f) {
 				GenerateBullet ();
 			}
 		}
 
 		//敵の生成
 		enemyInterval += Time.deltaTime;
-		if (enemyInterval >= 5.0f) {
+		if (enemyInterval >= 3.0f) {
 			GenerateEnemy ();
 		}
 
@@ -78,29 +85,42 @@ public class PlayerController : MonoBehaviour {
 
 	void MoveToBack(float vertical){
 		transform.Translate(0, 0, vertical * speedZ);
-	} 
+	}  
 
 	//弾を生成するためのメソッド
 	void GenerateBullet(){
-		BulletInterval = 0.0f;
-		Instantiate (Bullet, transform.position, Quaternion.identity);
+		bulletInterval = 0.0f;
+		Instantiate (bullet, transform.position, Quaternion.identity);
 	}
 
 	//敵を生成するためのメソッド
 	void GenerateEnemy(){
 		Quaternion q = Quaternion.Euler(0, 180, 0);
-		enemyInterval = 0.0f;
+		enemyInterval = 0;
 		//ランダムな場所に生成
 		Instantiate(enemy, new Vector3(Random.Range(-100, 100), transform.position.y, transform.position.z + 200),q);
 		//自身の目の前に生成
 		Instantiate(enemy, new Vector3(transform.position.x, transform.position.y, transform.position.z + 200),q);
 	}
 
+	//爆発
 	void OnTriggerEnter(Collider coll) {
 		if (coll.gameObject.tag == "EnemyBullet") {
+			//弾が当たれば体力を1減らす
+			playerLife--;
+			//sliderのvalueに、体力を代入する
+			slider.value = playerLife;
 			Instantiate(explosion, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity);
 			Destroy (coll.gameObject);
-			Destroy (this.gameObject);
+			//体力が0以下になれば、戦闘機が爆発するようにする
+			if (playerLife <= 0) {
+				Destroy (this.gameObject);
+
+				//ハイスコア更新
+				ScoreController obj = GameObject.Find ("Main Camera").GetComponent<ScoreController> ();
+				obj.SaveHighScore ();
+
+			}
 		}
 	}
 }
