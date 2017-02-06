@@ -7,12 +7,19 @@ public class PlayerController : MonoBehaviour {
 	public float speedZ;
 
 	//弾
-	public GameObject bullet;
-	float bulletInterval;
+	public GameObject Bullet;
+	float BulletInterval;
+
+	//敵
+	public GameObject enemy;
+	float enemyInterval;
 
 	// Use this for initialization
 	void Start () {
-		bulletInterval = 0;
+		//弾のインターバル
+		BulletInterval = 0.0f;
+		//敵のインターバル
+		enemyInterval = 0.0f;
 	}
 
 	// Update is called once per frame
@@ -36,12 +43,17 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		//弾の生成
-		bulletInterval += Time.deltaTime;
+		BulletInterval += Time.deltaTime;
 		if (Input.GetKey ("space")) {
-			if (bulletInterval >= 0.2f) {
-				print("発射！");
+			if (BulletInterval >= 0.2f) {
 				GenerateBullet ();
 			}
+		}
+
+		//敵の生成
+		enemyInterval += Time.deltaTime;
+		if (enemyInterval >= 5.0f) {
+			GenerateEnemy ();
 		}
 
 	}
@@ -65,9 +77,18 @@ public class PlayerController : MonoBehaviour {
 
 	//弾を生成するためのメソッド
 	void GenerateBullet(){
-		bulletInterval = 0.0f;
-		Instantiate (bullet, transform.position, Quaternion.identity);
-		//ここのtransform.positionはplayerの位置
+		BulletInterval = 0.0f;
+		Instantiate (Bullet, transform.position, Quaternion.identity);
+	}
+
+	//敵を生成するためのメソッド
+	void GenerateEnemy(){
+		Quaternion q = Quaternion.Euler(0, 180, 0);
+		enemyInterval = 0.0f;
+		//ランダムな場所に生成
+		Instantiate(enemy, new Vector3(Random.Range(-100, 100), transform.position.y, transform.position.z + 200),q);
+		//自身の目の前に生成
+		Instantiate(enemy, new Vector3(transform.position.x, transform.position.y, transform.position.z + 200),q);
 	}
 
 }
