@@ -326,6 +326,10 @@ Prefab:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 100012, guid: 2121120e731eda841a6c7793e7337aa5, type: 2}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2121120e731eda841a6c7793e7337aa5, type: 2}
   m_IsPrefabParent: 0
@@ -348,10 +352,38 @@ MonoBehaviour:
   speedZ: 2
   Bullet: {fileID: 1317924030139604, guid: 66a102027d83b41ee9d57a4db28a61c8, type: 2}
   enemy: {fileID: 1537882002590092, guid: b01589bfc9ef64ea588935aa85c7f35c, type: 2}
+  explosion: {fileID: 100000, guid: 1e47e1a2302b340578c901da5181c6f1, type: 2}
 --- !u!4 &1016852170 stripped
 Transform:
   m_PrefabParentObject: {fileID: 400012, guid: 2121120e731eda841a6c7793e7337aa5, type: 2}
   m_PrefabInternal: {fileID: 684790090}
+--- !u!54 &1016852171
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1016852168}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!65 &1016852172
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1016852168}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 6, y: 3, z: 7}
+  m_Center: {x: 0, y: 0, z: 1}
 --- !u!1001 &1316705452
 Prefab:
   m_ObjectHideFlags: 0

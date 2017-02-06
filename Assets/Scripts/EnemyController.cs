@@ -11,6 +11,9 @@ public class EnemyController : MonoBehaviour {
 	//弾
 	public GameObject enemyBullet;
 
+	//爆発
+	public GameObject explosion;
+
 	// Use this for initialization
 	void Start () {
 		//intervalの初期値の設定
@@ -33,9 +36,17 @@ public class EnemyController : MonoBehaviour {
 	void GenerateEnemyBullet(){
 		Quaternion q1 = Quaternion.Euler (0, 185, 0);
 		Quaternion q2 = Quaternion.Euler (0, 175, 0);
-		interval = 0.0f;
-		Instantiate (enemyBullet, new Vector3 (transform.position.x - 1, transform.position.y, transform.position.z -2), q1);
-		Instantiate (enemyBullet, new Vector3 (transform.position.x + 1 , transform.position.y, transform.position.z -2), q2);
+		interval = 0;
+		Instantiate (enemyBullet, new Vector3 (transform.position.x - 1, transform.position.y, transform.position.z), q1);
+		Instantiate (enemyBullet, new Vector3 (transform.position.x + 1, transform.position.y, transform.position.z), q2);
 	} 
 
+	//衝突判定・爆発
+	void OnTriggerEnter(Collider coll) {
+		if (coll.gameObject.tag == "PlayerBullet") {
+			Instantiate (explosion, transform.position, Quaternion.identity);
+			Destroy (this.gameObject);
+			Destroy (coll.gameObject);
+		}
+	}
 }

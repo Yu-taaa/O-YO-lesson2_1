@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
 	//移動のスピード
@@ -13,6 +14,10 @@ public class PlayerController : MonoBehaviour {
 	//敵
 	public GameObject enemy;
 	float enemyInterval;
+
+	//爆発
+	public GameObject explosion;
+
 
 	// Use this for initialization
 	void Start () {
@@ -91,4 +96,11 @@ public class PlayerController : MonoBehaviour {
 		Instantiate(enemy, new Vector3(transform.position.x, transform.position.y, transform.position.z + 200),q);
 	}
 
+	void OnTriggerEnter(Collider coll) {
+		if (coll.gameObject.tag == "EnemyBullet") {
+			Instantiate(explosion, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity);
+			Destroy (coll.gameObject);
+			Destroy (this.gameObject);
+		}
+	}
 }
